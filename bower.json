@@ -1,0 +1,33 @@
+{
+    "name": "Mba.ux.ImageViewer",
+    "version": "0.0.1",
+    "homepage": "https://github.com/bluebile/Mba.ux.ImageViewer",
+    "authors": [
+        "Bluebile <info@bluebile.com>"
+    ],
+    "description": "Melhorias consultas SQL",
+    "main": [
+        "ImageViewer.js"
+    ],
+    "keywords": [
+        "senchatouch",
+        "extjs",
+        "ux",
+        "image",
+        "view"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "demo",
+        "ux",
+        "**/*.*~",
+        "Gruntfile.js",
+        "bower.json",
+        "package.json",
+        "test",
+        "tests"
+    ]
+}
