@@ -5,7 +5,7 @@
  *
  * Initial work by Perdiga with thanks to Armode for the help, publicated at Sencha Forum:
  * http://www.sencha.com/forum/showthread.php?197903-Pinch-Image-with-carousel-and-working-fine
- * 
+ *
  * Based on work by themightychris:
  * http://www.sencha.com/forum/showthread.php?137632-mostly-working-pinch-zoom-image-carousel-help-perfect-it!
  *
@@ -16,38 +16,38 @@
 Ext.define('Mba.ux.ImageViewer', {
 
     extend: 'Ext.Container',
-    xtype : 'imageviewer',
-    alias : 'widget.imageviewer',
-    
+    xtype: 'imageviewer',
+    alias: 'widget.imageviewer',
+
     config: {
         doubleTapScale: 1,
-        maxScale      : 4,
-        loadingMask   : true,
-        previewSrc    : false,
-        resizeOnLoad  : true,
-        imageSrc      : false,
+        maxScale: 4,
+        loadingMask: true,
+        previewSrc: false,
+        resizeOnLoad: true,
+        imageSrc: false,
         initOnActivate: false,
-        cls           : 'imageBox',
-        scrollable    : 'both',
+        cls: 'imageBox',
+        scrollable: 'both',
         loadingMessage: 'Loading ...',
-        html          : '<figure><img></figure>',
-        errorImage    : false,
-        hideOnMaskTap : false
+        html: '<figure><img></figure>',
+        errorImage: false,
+        hideOnMaskTap: false
     },
-    
+
     duringDestroy: false,
-    
+
     initialize: function() {
         var me = this;
-        
+
         if (me.getInitOnActivate()) {
             me.on('activate', me.initViewer, me, {
-                delay: 10, 
+                delay: 10,
                 single: true
             });
         } else {
             me.on('painted', me.initViewer, me, {
-                delay: 10, 
+                delay: 10,
                 single: true
             });
         }
@@ -64,8 +64,8 @@ Ext.define('Mba.ux.ImageViewer', {
         // mask image viewer
         if (me.getLoadingMask()) {
             me.setMasked({
-                xtype : 'loadmask',
-                message : me.getLoadingMessage()
+                xtype: 'loadmask',
+                message: me.getLoadingMessage()
             });
         }
 
@@ -75,44 +75,44 @@ Ext.define('Mba.ux.ImageViewer', {
 
         // apply required styles
         me.figEl.setStyle({
-            overflow : 'hidden',
-            display : 'block',
-            margin : 0
+            overflow: 'hidden',
+            display: 'block',
+            margin: 0
         });
 
         me.imgEl.setStyle({
-            '-webkit-user-drag' : 'none',
-            '-webkit-transform-origin' : '0 0',
-            'visibility' : 'hidden'
+            '-webkit-user-drag': 'none',
+            '-webkit-transform-origin': '0 0',
+            'visibility': 'hidden'
         });
 
         // show preview
         if (me.getPreviewSrc()) {
             element.setStyle({
-                backgroundImage : 'url(' + me.getPreviewSrc() + ')',
-                backgroundPosition : 'center center',
-                backgroundRepeat : 'no-repeat',
-                webkitBackgroundSize : 'contain'
+                backgroundImage: 'url(' + me.getPreviewSrc() + ')',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                webkitBackgroundSize: 'contain'
             });
         }
 
         // attach event listeners
         me.on('load', me.onImageLoad, me);
         me.imgEl.addListener({
-            scope : me,
-            doubletap : me.onDoubleTap,
-            pinchstart : me.onImagePinchStart,
-            pinch : me.onImagePinch,
-            pinchend : me.onImagePinchEnd
+            scope: me,
+            doubletap: me.onDoubleTap,
+            pinchstart: me.onImagePinchStart,
+            pinch: me.onImagePinch,
+            pinchend: me.onImagePinchEnd
         });
 
         // attach event listeners on brackgroud ,it's like maskLayout
         if (me.getHideOnMaskTap()) {
             me.figEl.addListener({
-                scope : me,
+                scope: me,
                 singletap: me.onMaskTap
-            })
-        };
+            });
+        }
 
         // load image
         if (me.getImageSrc()) {
@@ -125,7 +125,7 @@ Ext.define('Mba.ux.ImageViewer', {
         if (me.imgEl) {
             me.imgEl.dom.src = src;
             me.imgEl.dom.onload = Ext.Function.bind(me.onLoad, me, me.imgEl, 0);
-            if(me.getErrorImage()){
+            if (me.getErrorImage()) {
                 me.imgEl.dom.onerror = function() {
                     this.src = me.getErrorImage();
                 };
@@ -134,18 +134,18 @@ Ext.define('Mba.ux.ImageViewer', {
             me.setImageSrc(src);
         }
     },
-    
-    unloadImage: function() {  
+
+    unloadImage: function() {
         var me = this;
-    
+
         // mask image viewer
         if (me.getLoadingMask()) {
             me.setMasked({
                 xtype: 'loadmask',
-                message:me.getLoadingMessage()
+                message: me.getLoadingMessage()
             });
         }
-    
+
         if (me.imgEl) {
             me.imgEl.dom.src = '';
             me.imgEl.setStyle({ visibility: 'hidden' });
@@ -155,12 +155,12 @@ Ext.define('Mba.ux.ImageViewer', {
         }
     },
 
-    onLoad : function(el, e) {
+    onLoad: function(el, e) {
         var me = this;
         me.fireEvent('load', me, el, e);
     },
 
-    onImageLoad : function() {
+    onImageLoad: function() {
         var me = this,
             parentElement = me.parent.element;
 
@@ -183,7 +183,7 @@ Ext.define('Mba.ux.ImageViewer', {
         // calc initial translation
         var tmpTranslateX = (me.viewportWidth - me.baseScale * me.imgWidth) / 2,
             tmpTranslateY = (me.viewportHeight - me.baseScale * me.imgHeight) / 2;
-        
+
         // set initial translation to center
         me.setTranslation(tmpTranslateX, tmpTranslateY);
         me.translateBaseX = me.translateX;
@@ -197,13 +197,13 @@ Ext.define('Mba.ux.ImageViewer', {
 
         // show image and remove mask
         me.imgEl.setStyle({
-            visibility : 'visible'
+            visibility: 'visible'
         });
 
         // remove preview
         if (me.getPreviewSrc()) {
             me.element.setStyle({
-                backgroundImage : 'none'
+                backgroundImage: 'none'
             });
         }
 
@@ -254,13 +254,13 @@ Ext.define('Mba.ux.ImageViewer', {
 
     onImagePinch: function(ev) {
         var me = this;
-        
+
         // prevent scaling to smaller than screen size
         me.scale = Ext.Number.constrain(ev.scale * me.startScale, me.baseScale - 2, me.getMaxScale());
         me.applyTransform();
     },
 
-    onImagePinchEnd : function(ev) {
+    onImagePinchEnd: function() {
         var me = this;
 
         // set new translation
@@ -295,18 +295,18 @@ Ext.define('Mba.ux.ImageViewer', {
                 pageY: 0
             },
             myScale = me.scale;
-            
+
         if (myScale < me.getMaxScale()) {
             myScale = me.scale + 0.05;
         }
-        
+
         if (myScale >= me.getMaxScale()) {
             myScale = me.getMaxScale();
         }
 
         ev.pageX = me.viewportWidth / 2;
         ev.pageY = me.viewportHeight / 2;
-        
+
         me.zoomImage(ev, myScale);
     },
 
@@ -317,29 +317,28 @@ Ext.define('Mba.ux.ImageViewer', {
                 pageY: 0
             },
             myScale = me.scale;
-            
+
         if (myScale > me.baseScale) {
             myScale = me.scale - 0.05;
         }
-        
+
         if (myScale <= me.baseScale) {
             myScale = me.baseScale;
         }
 
         ev.pageX = me.viewportWidth / 2;
         ev.pageY = me.viewportHeight / 2;
-        
+
         me.zoomImage(ev, myScale);
     },
 
-    zoomImage: function(ev, scale, scope) {
+    zoomImage: function(ev, scale) {
         var me = this,
             scroller = me.getScrollable().getScroller(),
             scrollPosition = scroller.position,
-            element = me.element;
-
-        // zoom in toward tap position
-        var oldScale = me.scale,
+            element = me.element,
+            // zoom in toward tap position
+            oldScale = me.scale,
             newScale = scale,
             originViewportX = ev ? (ev.pageX - element.getX()) : 0,
             originViewportY = ev ? (ev.pageY - element.getY()) : 0,
@@ -365,13 +364,13 @@ Ext.define('Mba.ux.ImageViewer', {
         }, 50);
     },
 
-    onDoubleTap: function(ev, t) {
+    onDoubleTap: function(ev) {
         var me = this,
             scroller = me.getScrollable().getScroller(),
             scrollPosition = scroller.position,
             element = me.element;
 
-        if (!me.getDoubleTapScale()){
+        if (!me.getDoubleTapScale()) {
             return false;
         }
 
@@ -419,7 +418,7 @@ Ext.define('Mba.ux.ImageViewer', {
         }
     },
 
-    onMaskTap:function () {
+    onMaskTap: function() {
         var me = this;
         me.hide();
     },
@@ -430,7 +429,7 @@ Ext.define('Mba.ux.ImageViewer', {
 
     setTranslation: function(translateX, translateY) {
         var me = this;
-        
+
         me.translateX = translateX;
         me.translateY = translateY;
 
@@ -449,11 +448,11 @@ Ext.define('Mba.ux.ImageViewer', {
 
     resetZoom: function() {
         var me = this;
-        
+
         if (me.duringDestroy) {
             return;
         }
-        
+
         //Resize to init size like ios
         me.scale = me.baseScale;
 
@@ -467,10 +466,10 @@ Ext.define('Mba.ux.ImageViewer', {
         me.adjustScroller();
 
     },
-    
+
     resize: function() {
         var me = this;
-        
+
         // get viewport size
         me.viewportWidth = me.parent.element.getWidth() || me.viewportWidth || me.getWidth();
         me.viewportHeight = me.parent.element.getHeight() || me.viewportHeight || me.getHeight();
@@ -510,7 +509,9 @@ Ext.define('Mba.ux.ImageViewer', {
             //+' scale('+fixedScale+','+fixedScale+')';
             'matrix(' + fixedScale + ',0,0,' + fixedScale + ',' + fixedX + ',' + fixedY + ')';
         } else {
-            me.imgEl.dom.style.webkitTransform = 'translate3d(' + fixedX + 'px, ' + fixedY + 'px, 0)' + ' scale3d(' + fixedScale + ',' + fixedScale + ',1)';
+            var translate = 'translate3d(' + fixedX + 'px, ' + fixedY + 'px, 0)' +
+                          ' scale3d(' + fixedScale + ',' + fixedScale + ',1)';
+            me.imgEl.dom.style.webkitTransform = translate;
         }
     },
 
@@ -527,11 +528,11 @@ Ext.define('Mba.ux.ImageViewer', {
         }
 
         // size container to final image size
-        var boundWidth = Math.max(me.imgWidth * scale + 2 * me.translateX, me.viewportWidth);
-        var boundHeight = Math.max(me.imgHeight * scale + 2 * me.translateY, me.viewportHeight);
+        var boundWidth = Math.max(me.imgWidth * scale + 2 * me.translateX, me.viewportWidth),
+            boundHeight = Math.max(me.imgHeight * scale + 2 * me.translateY, me.viewportHeight);
 
         me.figEl.setStyle({
-            width : boundWidth + 'px',
+            width: boundWidth + 'px',
             height: boundHeight + 'px'
         });
 
@@ -543,25 +544,25 @@ Ext.define('Mba.ux.ImageViewer', {
         if (me.scrollX) {
             x = me.scrollX;
         }
-        
+
         var y = 0;
         if (me.scrollY) {
             y = me.scrollY;
         }
-        
+
         scroller.scrollTo(x * -1, y * -1);
     },
-    
+
     destroy: function() {
         var me = this;
-        
+
         me.duringDestroy = true;
-        
+
         me.un('activate', me.initViewer, me);
         me.un('painted', me.initViewer, me);
-        
+
         Ext.destroy(me.getScrollable(), me.imgEl);
-        
+
         me.callParent();
     }
-}); 
+});
