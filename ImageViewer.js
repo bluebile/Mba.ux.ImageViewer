@@ -32,7 +32,8 @@ Ext.define('Mba.ux.ImageViewer', {
         loadingMessage: 'Loading ...',
         html: '<figure><img></figure>',
         errorImage: false,
-        hideOnMaskTap: false
+        hideOnMaskTap: false,
+        initDelay: 10
     },
 
     duringDestroy: false,
@@ -42,12 +43,12 @@ Ext.define('Mba.ux.ImageViewer', {
 
         if (me.getInitOnActivate()) {
             me.on('activate', me.initViewer, me, {
-                delay: 10,
+                delay: me.initDelay,
                 single: true
             });
         } else {
             me.on('painted', me.initViewer, me, {
-                delay: 10,
+                delay: me.initDelay,
                 single: true
             });
         }
