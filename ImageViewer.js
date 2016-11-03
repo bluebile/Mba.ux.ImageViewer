@@ -212,6 +212,9 @@ Ext.define('Mba.ux.ImageViewer', {
             me.setMasked(false);
         }
 
+        //Correção para tablet
+        me.zoomImage(ev, me.scale + 0.005);
+
         me.fireEvent('imageLoaded', me);
     },
 
@@ -317,14 +320,16 @@ Ext.define('Mba.ux.ImageViewer', {
                 pageX: 0,
                 pageY: 0
             },
+
             myScale = me.scale;
 
+        console.log(myScale);
         if (myScale > me.baseScale) {
             myScale = me.scale - 0.05;
         }
 
         if (myScale <= me.baseScale) {
-            myScale = me.baseScale;
+            myScale = me.baseScale + 0.005;
         }
 
         ev.pageX = me.viewportWidth / 2;
@@ -332,7 +337,6 @@ Ext.define('Mba.ux.ImageViewer', {
 
         me.zoomImage(ev, myScale);
     },
-
     zoomImage: function(ev, scale) {
         var me = this,
             scroller = me.getScrollable().getScroller(),
@@ -455,7 +459,7 @@ Ext.define('Mba.ux.ImageViewer', {
         }
 
         //Resize to init size like ios
-        me.scale = me.baseScale;
+        me.scale = me.baseScale + 0.005;
 
         me.setTranslation(me.translateBaseX, me.translateBaseY);
 
