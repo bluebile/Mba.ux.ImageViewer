@@ -213,6 +213,10 @@ Ext.define('Mba.ux.ImageViewer', {
         }
 
         //Correção para tablet
+        var ev = {
+            pageX: 0,
+            pageY: 0
+        }
         me.zoomImage(ev, me.scale + 0.005);
 
         me.fireEvent('imageLoaded', me);
@@ -320,16 +324,14 @@ Ext.define('Mba.ux.ImageViewer', {
                 pageX: 0,
                 pageY: 0
             },
-
             myScale = me.scale;
 
-        console.log(myScale);
         if (myScale > me.baseScale) {
             myScale = me.scale - 0.05;
         }
 
         if (myScale <= me.baseScale) {
-            myScale = me.baseScale + 0.005;
+            myScale = me.baseScale;
         }
 
         ev.pageX = me.viewportWidth / 2;
@@ -337,6 +339,7 @@ Ext.define('Mba.ux.ImageViewer', {
 
         me.zoomImage(ev, myScale);
     },
+
     zoomImage: function(ev, scale) {
         var me = this,
             scroller = me.getScrollable().getScroller(),
